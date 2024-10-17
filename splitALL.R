@@ -10,15 +10,6 @@ library(Matrix)
 library(dplyr)
 set.seed(1234)
 
-args <- commandArgs(trailingOnly = TRUE)
-
-
-myRDS <- readRDS("15days_preprocessed.rds") 
-
-groups <- sample(c("15dayS1", "15dayS2"), size =14364 ,replace = TRUE)
-names(groups) <- colnames(myObject)
-myObject  <-  AddMetaData(object = myObject, metadata = groups, col.name = "sample")
-saveRDS(myObject, file = "15daySplit_preprocessed.rds")
 
 #After analysing and merging 
 myRDS <- readRDS("photoreceptor_analysed.rds")
