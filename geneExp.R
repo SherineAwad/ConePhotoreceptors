@@ -25,11 +25,11 @@ table(cones@meta.data[,'sample'])
 cones@active.ident <- as.factor(cones@meta.data[,'sample'])
 names(cones@active.ident) <- rownames(cones@meta.data)
 
-DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.25)
+DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
 write.csv(DEGs, "photoreceptors_conesDGES.csv") 
 
-
-AverageExpression <- AverageExpression(object = cones)
+cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
+AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
 write.csv(AverageExpression,"photoreceptors_conesAvgExp.csv") 
 
 
