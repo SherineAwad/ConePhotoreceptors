@@ -13,7 +13,7 @@ set.seed(1234)
 args <- commandArgs(trailingOnly = TRUE)
 mysample <- args[1]
 
-myRDS <- paste(mysample, "_split.rds", sep="")
+myRDS <- paste(mysample, "_analysed.rds", sep="")
 myRDS
 
 myObject <- readRDS(myRDS)
@@ -21,6 +21,9 @@ myObject <- readRDS(myRDS)
 #head(myObject) 
 #levels(myObject)
 #head(Idents(myObject) 
+
+table(myObject@active.ident)
+table(myObject@meta.data[,'sample'])
 
 
 myObject <- RenameIdents(

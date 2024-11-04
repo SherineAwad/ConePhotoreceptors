@@ -17,8 +17,9 @@ myRDS <- paste(mysample, ".rds", sep="")
 myRDS
 
 myObject <- readRDS(myRDS)
-
 DefaultAssay(myObject) <- "RNA"
+
+
 
 myObject <- NormalizeData(myObject)
 myObject <- FindVariableFeatures(myObject)

@@ -32,7 +32,6 @@ cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", sc
 AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
 write.csv(AverageExpression,"photoreceptors_conesAvgExp.csv") 
 
-
 myRDS <- paste(mysample, "_cones.rds", sep="")
 saveRDS(cones, file = myRDS)
 
