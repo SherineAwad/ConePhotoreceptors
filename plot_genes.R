@@ -47,7 +47,7 @@ myGenes <- c("Gls","Arr3",
 figure_name <- ""
 figure_name <- paste(mysample, "GLSDP.png", sep="")
 png(filename = figure_name, width = 1500, height = 1500, units = "px")
-DotPlot(myObject, features = myGenes) + RotatedAxis()
+DotPlot(myObject, features = myGenes, split.by ="sample") + RotatedAxis()
 dev.off()
 
 

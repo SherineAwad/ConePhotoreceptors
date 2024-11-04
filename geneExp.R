@@ -25,6 +25,14 @@ table(cones@meta.data[,'sample'])
 cones@active.ident <- as.factor(cones@meta.data[,'sample'])
 names(cones@active.ident) <- rownames(cones@meta.data)
 
+cones @meta.data[,'sample'] <- recode(cones@meta.data[,'sample'], "15dayS1" = "Ctrl", "30dayS1" = "Ctrl")
+
+cones @meta.data[,'sample'] <- recode(cones@meta.data[,'sample'], "15dayS2" = "Ctrl", "30dayS2" = "KO")
+
+cones @active.ident  <- recode(cones @active.ident, "15dayS1" = "Ctrl", "30dayS1" = "Ctrl")
+
+cones @active.ident  <- recode(cones @active.ident, "15dayS2" = "Ctrl", "30dayS2" = "KO")
+
 DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
 write.csv(DEGs, "photoreceptors_conesDGES.csv") 
 
