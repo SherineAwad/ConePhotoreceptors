@@ -7,6 +7,9 @@ library(patchwork)
 library(Matrix)
 library(dplyr)
 set.seed(1234)
+library(RColorBrewer)
+library(viridis)
+
 
 args <- commandArgs(trailingOnly = TRUE)
 mysample <- args[1]
@@ -18,21 +21,23 @@ myObject <- readRDS(myRDS)
 figure_name <- ""
 figure_name <- paste(mysample, "Cones_UMAP.pdf", sep="")
 pdf(file =figure_name, width =12)
-DimPlot(myObject, reduction = "umap", group.by = "orig.ident",  repel = TRUE) + ggtitle("UMAP")
+DimPlot(myObject, reduction = "umap", group.by = "orig.ident",  repel = TRUE) + ggtitle("UMAP") 
 DimPlot(myObject, reduction = "umap", label=TRUE, repel = TRUE) + ggtitle("UMAP")
 dev.off()
 
 myGenes <- c("Gls")
-figure_name <- paste(mysample, "GLSFP.png", sep="")
-png(filename = figure_name, width = 1500, height = 1500, units = "px")
-FeaturePlot(myObject , features =myGenes, split.by = "sample", reduction = "umap", cols = c("lightgrey", "red"), pt.size = 0.01)
+figure_name <- paste(mysample, "GLSFP.pdf", sep="")
+pdf(file = figure_name, width = 12)
+FeaturePlot(myObject , features =myGenes, split.by = "sample", reduction = "umap", cols =  brewer.pal(9, "Blues"), pt.size = 0.3)
 dev.off() 
 
 
-figure_name <- paste(mysample, "GLSVP.png", sep="")
-png(filename = figure_name, width = 1500, height = 1500, units = "px")
-VlnPlot(myObject , features =myGenes, split.by = "sample")
+figure_name <- paste(mysample, "GLSVP.pdf", sep="")
+pdf(file = figure_name, width = 12)
+VlnPlot(myObject , features =myGenes, split.by = "sample",cols =  brewer.pal(9, "RdYlGn"),pt.size=0.3)
 dev.off()
+
+
 
 myGenes <- c("Gls","Arr3",
 "Gnat2",
@@ -45,9 +50,10 @@ myGenes <- c("Gls","Arr3",
 "Kcng1",
 "Unc5c")
 figure_name <- ""
-figure_name <- paste(mysample, "GLSDP.png", sep="")
-png(filename = figure_name, width = 1500, height = 1500, units = "px")
-DotPlot(myObject, features = myGenes, split.by ="sample") + RotatedAxis()
+figure_name <- paste(mysample, "GLSDP.pdf", sep="")
+pdf(file = figure_name, width = 12)
+DotPlot(myObject, features = myGenes, split.by ="sample", group.by="sample", dot.scale = 12) + RotatedAxis()  
 dev.off()
+
 
 
