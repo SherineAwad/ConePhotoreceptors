@@ -28,13 +28,13 @@ dev.off()
 myGenes <- c("Gls")
 figure_name <- paste(mysample, "GLSFP.pdf", sep="")
 pdf(file = figure_name, width = 12)
-FeaturePlot(myObject , features =myGenes, split.by = "sample", reduction = "umap", cols =  brewer.pal(9, "Blues"), pt.size = 0.3)
+FeaturePlot(myObject , features =myGenes, split.by = "sample", reduction = "umap", pt.size = 0.4)
 dev.off() 
 
 
 figure_name <- paste(mysample, "GLSVP.pdf", sep="")
 pdf(file = figure_name, width = 12)
-VlnPlot(myObject , features =myGenes, split.by = "sample",cols =  brewer.pal(9, "RdYlGn"),pt.size=0.3)
+VlnPlot(myObject , features =myGenes, split.by = "sample",cols =  brewer.pal(9, "RdYlBu"),pt.size=0.4)
 dev.off()
 
 
