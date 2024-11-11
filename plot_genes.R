@@ -18,12 +18,6 @@ myRDS
 
 myObject <- readRDS(myRDS)
 
-figure_name <- ""
-figure_name <- paste(mysample, "Cones_UMAP.pdf", sep="")
-pdf(file =figure_name, width =12)
-DimPlot(myObject, reduction = "umap", group.by = "orig.ident",  repel = TRUE) + ggtitle("UMAP") 
-DimPlot(myObject, reduction = "umap", label=TRUE, repel = TRUE) + ggtitle("UMAP")
-dev.off()
 
 myGenes <- c("Gls")
 figure_name <- paste(mysample, "GLSFP.pdf", sep="")
@@ -34,7 +28,7 @@ dev.off()
 
 figure_name <- paste(mysample, "GLSVP.pdf", sep="")
 pdf(file = figure_name, width = 12)
-VlnPlot(myObject , features =myGenes, split.by = "sample",cols =  brewer.pal(9, "RdYlBu"),pt.size=0.4)
+VlnPlot(myObject , features =myGenes, group.by = "sample",cols =  brewer.pal(9, "RdYlBu"),pt.size=0.4)
 dev.off()
 
 

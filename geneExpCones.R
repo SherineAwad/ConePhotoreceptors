@@ -14,18 +14,12 @@ library(viridis)
 args <- commandArgs(trailingOnly = TRUE)
 
 mysample = args[1]
-myRDS <- paste(mysample, "_annotated.rds", sep="")
+myRDS <- paste(mysample, "_reClusteredCones.rds", sep="")
 mysample
 myRDS
 
-myObject <- readRDS(myRDS)
+cones <- readRDS(myRDS)
 
-
-cones <- subset(myObject, idents = "Cone", invert = FALSE)
-table(cones@active.ident)
-table(cones@meta.data[,'sample'])
-cones@active.ident <- as.factor(cones@meta.data[,'sample'])
-names(cones@active.ident) <- rownames(cones@meta.data)
 
 DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
 write.csv(DEGs, "photoreceptors_conesDGESper4.csv") 
@@ -42,7 +36,7 @@ dev.off()
 cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
 AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
 write.csv(AverageExpression,"photoreceptors_conesAvgExpper4.csv") 
-DefaultAssay(myObject) <- "RNA"
+DefaultAssay(cones) <- "RNA"
 
 
 cones @meta.data[,'sample'] <- recode(cones@meta.data[,'sample'], "15dayS1" = "Ctrl", "30dayS1" = "Ctrl")
