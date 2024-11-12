@@ -10,6 +10,7 @@ library(Matrix)
 library(dplyr)
 set.seed(1234)
 library(viridis)
+library(RColorBrewer)
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -27,11 +28,13 @@ write.csv(DEGs, "photoreceptors_conesDGESper4.csv")
 top_genes <- DEGs[order(DEGs$p_val), ][1:50, ]  # Top 10 genes based on smallest p-value
 top_gene_list <- rownames(top_genes)
 
+mapal <- colorRampPalette(RColorBrewer::brewer.pal(11,"PuBu"))(256)
 figure_name <- ""
 figure_name <- paste(mysample, "heatmapPerSamples.pdf", sep="")
 pdf(file =figure_name, width =12)
-DoHeatmap(cones,features = top_gene_list,size = 4, group.by = "sample", slot="data") + NoLegend()+ theme(axis.text.y = element_text(size = 5)+ scale_fill_gradientn(colors = c("blue", "white", "red")))
-dev.off()
+DoHeatmap(cones,features = top_gene_list,size = 4, group.by = "sample", slot="data",group.colors = brewer.pal(9, "Blues"))+ scale_fill_gradientn(colours = rev(mapal))
+dev.off() 
+
 
 cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
 AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
@@ -59,6 +62,14 @@ figure_name <- paste(mysample, "heatmap.pdf", sep="")
 pdf(file =figure_name, width =12)
 DoHeatmap(cones,features = top_gene_list, size = 4,group.by = "sample", slot="data") + NoLegend()+ theme(axis.text.y = element_text(size = 5)+ scale_fill_gradientn(colors = c("blue", "white", "red")))
 dev.off()
+
+
+mapal <- colorRampPalette(RColorBrewer::brewer.pal(11,"PuBu"))(256)
+figure_name <- ""
+figure_name <- paste(mysample, "heatmap.pdf", sep="")
+pdf(file =figure_name, width =12)
+DoHeatmap(cones,features = top_gene_list, size = 4,group.by = "sample", slot="data",group.colors = brewer.pal(9, "Blues"))+ scale_fill_gradientn(colours = rev(mapal))
+dev.off() 
 
 cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
 AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")

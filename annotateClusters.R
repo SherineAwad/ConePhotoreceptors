@@ -82,6 +82,35 @@ DimPlot(mySubset, reduction = "umap", group.by = "sample",  repel = TRUE) + ggti
 DimPlot(mySubset, reduction = "umap", label=TRUE, repel = TRUE) + ggtitle("UMAP")
 dev.off()
 
+#get no. of cells per sample and cells 
+table(myObject@meta.data$sample, myObject@meta.data$cells)
+
+df <- data.frame(CellType = c("AC", "Rod", "Cone", "HC", "MG", "BC", "Vasculature cells", "RPE"), day15S1=c(296,4467,243,114,199,641,41,16),
+day15S2=c(213,3390,176,133,180,581,35,15),
+day30S1=c(393,6315,244,95,198,748,24,24),
+day30S2=c(324,6239,212,102,199,780,38,27) )
+library(tidyr)
+df_long <- df %>% gather(key = "Condition", value = "Value", -CellType)
+df_percent <- df_long %>%
+  group_by(Condition) %>%
+  mutate(Percent = Value / sum(Value) * 100)
+
+
+stallion = c("AC"="#D51F26","Rod"="#003782","Cone"="#208A42","HC"="#820078","MGPC"="#F47D2B", "MG"="#FFA500","BC"="#8A9FD1","Vasculature cells" ="#E6C122","RPE" ="#4B4BF7")
+pdf(file = "Cellratio.pdf", width=4, height=4, onefile=FALSE)
+ggplot(df_percent, aes(x = Condition, y = Percent, fill = CellType)) +
+  geom_bar(stat = "identity", position = "fill") +  # position = "fill" makes it a percent stacked barplot
+  scale_y_continuous(labels = scales::percent) +    # Show y-axis as percentage
+  labs(y = "Cell Ratio", x = "Sample", fill = "Cell Type") +
+  theme_minimal() +
+  ggtitle("Celltype Ratio") +
+   scale_fill_manual(values = stallion) +
+   theme(axis.text.x = element_text(angle = 45, hjust = 1),
+   axis.line = element_line(size = 1.5))
+dev.off()
+
+
+
 myRDS <- paste(mysample, "_annotated.rds", sep="")
 saveRDS(mySubset, file = myRDS)
 
