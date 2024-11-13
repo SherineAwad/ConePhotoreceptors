@@ -35,7 +35,7 @@ mapal <- colorRampPalette(RColorBrewer::brewer.pal(11,"PuBu"))(256)
 figure_name <- ""
 figure_name <- paste(mysample, "Cellsheatmap.pdf", sep="")
 pdf(file =figure_name, width=18)
-DoHeatmap(object = myObject, features = top_gene_list,size = 2.5, group.by ="cells",  slot="data",group.colors = brewer.pal(9, "Blues")) + scale_fill_gradientn(colours = rev(mapal))
+DoHeatmap(object = myObject, features = top_gene_list,size = 2.5, group.by ="cells",  slot="data",group.colors = brewer.pal(9, "Blues")) +  scale_fill_gradientn(colors = c("blue", "white", "red")) #+ scale_fill_gradientn(colours = rev(mapal))
 dev.off()
 
 myRDS <- paste(mysample, "_annotated.rds", sep="")
