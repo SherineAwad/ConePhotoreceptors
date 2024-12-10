@@ -13,14 +13,20 @@ library(viridis)
 library(RColorBrewer)
 
 
-args <- commandArgs(trailingOnly = TRUE)
 
-mysample = args[1]
-myRDS <- paste(mysample, "_annotated.rds", sep="")
-mysample
-myRDS
+args <- commandArgs(trailingOnly = TRUE)
+myRDS <- args[1]
+
+split_string <- strsplit(myRDS, "_")[[1]]
+mysample <- split_string[1]
+print(mysample)
+
 
 myObject <- readRDS(myRDS)
+
+DefaultAssay(myObject) <- "RNA"
+
+
 
 myObject[["cells"]] <- Idents(object = myObject)
 
@@ -39,7 +45,7 @@ pdf(file =figure_name, width=18)
 DoHeatmap(object = myObject, features = top_gene_list,size = 2.5, group.by ="cells",  slot="data",group.colors = brewer.pal(9, "Blues")) +  scale_fill_gradientn(colors = c("blue", "white", "red")) 
 dev.off()
 
-myRDS <- paste(mysample, "_annotated.rds", sep="")
+myRDS <- paste(mysample, "_GenExp.rds", sep="")
 saveRDS(myObject, file = myRDS)
 
 
