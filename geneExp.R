@@ -31,22 +31,17 @@ DefaultAssay(myObject) <- "RNA"
 myObject[["cells"]] <- Idents(object = myObject)
 
 DEGs <- FindAllMarkers(object = myObject, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
-
-top_genes<- DEGs%>% group_by(cluster) %>% top_n(n = 20, wt = avg_log2FC)
+top_genes<- DEGs%>% group_by(cluster) %>% top_n(n = 5, wt = avg_log2FC)
 top_gene_list <- top_genes$gene
-
-
-
 top_gene_list 
 
+
 figure_name <- ""
-figure_name <- paste(mysample, "Cellsheatmap.pdf", sep="")
-pdf(file =figure_name, width=18)
-DoHeatmap(object = myObject, features = top_gene_list,size = 2.5, group.by ="cells",  slot="data",group.colors = brewer.pal(9, "Blues")) +  scale_fill_gradientn(colors = c("blue", "white", "red")) 
+figure_name <- paste(mysample, "DEGsDP.pdf", sep="")
+pdf(file =figure_name, width=18, height=12)
+DotPlot(myObject, features = top_gene_list,  col.min = -100, col.max =100,group.by="cells",split.by="sample", cols =  brewer.pal(9, "Blues"), dot.scale = 12)  + RotatedAxis()
 dev.off()
 
-myRDS <- paste(mysample, "_GenExp.rds", sep="")
-saveRDS(myObject, file = myRDS)
 
 
 

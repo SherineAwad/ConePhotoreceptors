@@ -49,8 +49,8 @@ myGenes <- c("Gls","Arr3",
 "Unc5c")
 figure_name <- ""
 figure_name <- paste(mysample, "GLSDP.pdf", sep="")
-pdf(file = figure_name, width = 12)
-DotPlot(myObject, features = myGenes, split.by ="sample", group.by="sample", dot.scale = 12) + RotatedAxis()  
+pdf(file =figure_name, width=8, height=5)
+DotPlot(myObject, features = myGenes, col.min = -100, col.max =100, group.by="sample", dot.scale = 12) + RotatedAxis()
 dev.off()
 
 
@@ -71,7 +71,7 @@ df_percent <- df_long %>%
   mutate(Percent = Value / sum(Value) * 100)
 
 
-stallion = c("AC"="#D51F26","Rod"="#003782","Cone"="#208A42","HC"="#820078","MGPC"="#F47D2B", "MG"="#FFA500","BC"="#8A9FD1","Vasculature cells" ="#E6C122","RPE" ="#4B4BF7")
+stallion = c("AC"="#D51F26","Rod"="#003782","Cones"="#208A42","HC"="#820078","MGPC"="#F47D2B", "MG"="#FFA500","BC"="#8A9FD1","Vasculature cells" ="#E6C122","RPE" ="#4B4BF7")
 pdf(file = "Cellratio.pdf", width=4, height=4, onefile=FALSE)
 ggplot(df_percent, aes(x = Condition, y = Percent, fill = CellType)) +
   geom_bar(stat = "identity", position = "fill") +  # position = "fill" makes it a percent stacked barplot
