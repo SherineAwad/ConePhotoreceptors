@@ -24,7 +24,7 @@ print(mysample)
 
 cones <- readRDS(myRDS)
 filename = ""
-filename = paste(mysample,"conesDGEsPerSamples.csv", sep="")
+filename = paste(mysample,"_conesDGEsPerSamples.csv", sep="")
 DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
 write.csv(DEGs, filename) 
 
@@ -39,7 +39,7 @@ cones @active.ident  <- recode(cones @active.ident, "15dayS2" = "KO", "30dayS2" 
 
 DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use ='wilcox', logfc.threshold = 0.5)
 filename =""
-filename <- paste(mysample, "conesDEGs.csv", sep="")
+filename <- paste(mysample, "_conesDEGs.csv", sep="")
 write.csv(DEGs, filename)
 
 
@@ -48,7 +48,7 @@ top_gene_list <- top_genes$gene
 top_gene_list 
 
 figure_name <- ""
-figure_name <- paste(mysample, "DEGsDP.pdf", sep="")
+figure_name <- paste(mysample, "_conesDEGsDP.pdf", sep="")
 pdf(file =figure_name, width=15, height=5)
 DotPlot(cones, features = top_gene_list,  col.min = -100, col.max =100,group.by="sample", dot.scale = 12) + RotatedAxis()
 dev.off()

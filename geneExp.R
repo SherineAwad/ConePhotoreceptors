@@ -37,14 +37,20 @@ top_gene_list
 
 
 figure_name <- ""
-figure_name <- paste(mysample, "DEGsDP.pdf", sep="")
+figure_name <- paste(mysample, "allDEGsDP.pdf", sep="")
 pdf(file =figure_name, width=18, height=12)
-DotPlot(myObject, features = top_gene_list,  col.min = -100, col.max =100,group.by="cells",split.by="sample", cols =  brewer.pal(9, "Blues"), dot.scale = 12)  + RotatedAxis()
+DotPlot(myObject, features = top_gene_list,  col.min = -100, col.max =100,group.by="cells", dot.scale = 12)  + RotatedAxis()
 dev.off()
 
 
 
 
+
+figure_name <- ""
+figure_name <- paste(mysample, "allDEGsDPsplitSample.pdf", sep="")
+pdf(file =figure_name, width=18, height=12)
+DotPlot(myObject, features = top_gene_list,  col.min = -100, col.max =100, split.by ="sample", group.by="cells",cols =  brewer.pal(9, "RdYlBu"),  dot.scale = 12)  + RotatedAxis()
+dev.off()
 
 
 
