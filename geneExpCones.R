@@ -29,6 +29,13 @@ DEGs <- FindAllMarkers(object = cones, only.pos = TRUE, min.pct = 0.1,test.use =
 write.csv(DEGs, filename) 
 
 
+cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
+AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
+filename =""
+filename <- paste(mysample, "_coneAvgExpPerSamples.csv", sep="")
+write.csv(AverageExpression, filename)
+
+
 cones @meta.data[,'sample'] <- recode(cones@meta.data[,'sample'], "15dayS1" = "Ctrl", "30dayS1" = "Ctrl")
 
 cones @meta.data[,'sample'] <- recode(cones@meta.data[,'sample'], "15dayS2" = "KO", "30dayS2" = "KO")
@@ -51,25 +58,15 @@ top_gene_list
 figure_name <- ""
 figure_name <- paste(mysample, "_conesDEGsDP.pdf", sep="")
 pdf(file =figure_name, width=15, height=5)
-DotPlot(cones, features = top_gene_list,  col.min = -100, col.max =100,group.by="sample", dot.scale = 12) + RotatedAxis()
+DotPlot(cones, features = top_gene_list,  col.min = -100, col.max =100,group.by="sample", dot.scale = 8) + RotatedAxis()
 dev.off()
 
 
 cones <- NormalizeData(object = cones, normalization.method = "LogNormalize", scale.factor = 10000)
-AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample",return.seurat=TRUE)
+AverageExpression <- AverageExpression(object = cones,assays = "RNA",  group.by ="sample")
 filename =""
 filename <- paste(mysample, "_coneAvgExp.csv", sep="")
 write.csv(AverageExpression, filename)
-
-
-figure_name <- ""
-figure_name <- paste(mysample, "_conesAvgExpHeatmap.pdf", sep="")
-
-fObject <- FindVariableFeatures(cones, selection.method = "vst", nfeatures = 2000)
-top_variable_genes <- head(VariableFeatures(fObject), n = 20)
-pdf(file =figure_name)
-DoHeatmap(object = AverageExpression, features = top_variable_genes, raster= F, draw.lines =FALSE, group.colors = brewer.pal(9, "Blues")) + scale_fill_gradientn(colors = c("blue", "white", "red"))
-dev.off()
 
 myRDS <- paste(mysample, "_cones.rds", sep="")
 saveRDS(cones, file = myRDS)
