@@ -1,0 +1,54 @@
+with open(config['SAMPLES']) as fp:
+    samples = fp.read().splitlines()
+
+
+
+rule all:
+         input:
+            expand("clustered_{all}.h5ad", all= config['ALL']), 
+            expand("annotated_{all}.h5ad", all=config['ALL']),
+            expand("{subset}_{all}.h5ad", subset=config['SUBSET'], all=config['ALL'])
+rule cluster: 
+       input:
+          expand("{all}.h5ad", all=config['ALL']) 
+       output:
+          expand("clustered_{all}.h5ad", all=config['ALL'])
+       shell:
+          """
+          python cluster.py {input}
+          """
+
+rule analyse:
+     input:
+        expand("{all}.h5ad", all=config['ALL'])
+     output:
+        expand("analysed_{all}.h5ad", all=config['ALL'])
+     shell:
+        """
+        python analyse.py {input}
+        """
+
+rule annotate:
+       input:
+          expand("clustered_{all}.h5ad", all=config['ALL'])
+       output:
+          expand("annotated_{all}.h5ad", all=config['ALL'])
+       params: 
+         annofile = config['ANNOFILE'] 
+       shell:
+          """
+          python annotate.py {input} {params.annofile} 
+          """
+
+rule subset: 
+       input:
+          expand("annotated_{all}.h5ad", all=config['ALL'])
+       output:
+          expand("{subset}_{all}.h5ad", subset=config['SUBSET'], all=config['ALL'])
+       params:
+         subset = config['SUBSET']
+       shell:
+          """
+          python subset.py {input} {params.subset}
+          """
+
