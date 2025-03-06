@@ -5,12 +5,27 @@ with open(config['SAMPLES']) as fp:
 
 rule all:
          input:
+            expand("analysed_{all}.h5ad", all= config['ALL']),
             expand("clustered_{all}.h5ad", all= config['ALL']), 
             expand("annotated_{all}.h5ad", all=config['ALL']),
-            expand("{subset}_{all}.h5ad", subset=config['SUBSET'], all=config['ALL'])
+            "15days.h5ad", 
+            "35days.h5ad", 
+            #expand("{subset}_{all}.h5ad", subset=config['SUBSET'], all=config['ALL'])
+
+
+rule analyse:
+       input:
+          expand("{all}.h5ad", all=config['ALL'])
+       output:
+          expand("analysed_{all}.h5ad", all=config['ALL'])
+       shell:
+          """
+          python analyse.py {input}
+          """
+
 rule cluster: 
        input:
-          expand("{all}.h5ad", all=config['ALL']) 
+          expand("analysed_{all}.h5ad", all=config['ALL']) 
        output:
           expand("clustered_{all}.h5ad", all=config['ALL'])
        shell:
@@ -18,15 +33,6 @@ rule cluster:
           python cluster.py {input}
           """
 
-rule analyse:
-     input:
-        expand("{all}.h5ad", all=config['ALL'])
-     output:
-        expand("analysed_{all}.h5ad", all=config['ALL'])
-     shell:
-        """
-        python analyse.py {input}
-        """
 
 rule annotate:
        input:
@@ -39,6 +45,17 @@ rule annotate:
           """
           python annotate.py {input} {params.annofile} 
           """
+
+rule subsetDays: 
+      input:
+          expand("annotated_{all}.h5ad", all=config['ALL'])
+      output: 
+          "15days.h5ad",
+          "35days.h5ad",
+      shell:  
+         """ 
+         python subsetDays.py {input}
+         """ 
 
 rule subset: 
        input:
