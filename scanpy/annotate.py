@@ -20,7 +20,7 @@ myObject =  args.myObject
 annot_file = args.annotations
 
 parts = myObject.split("_")
-newObject = "annotated_" + parts[1]
+newObject = "annotated_" + parts[1] 
 
 fname = parts[1].split(".")
 sample = fname[0]
