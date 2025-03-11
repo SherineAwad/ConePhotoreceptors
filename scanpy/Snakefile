@@ -7,11 +7,12 @@ rule all:
          input:
             expand("analysed_{all}.h5ad", all= config['ALL']),
             expand("clustered_{all}.h5ad", all= config['ALL']), 
-            expand("annotated_{all}.h5ad", all=config['ALL']),
-            "15days.h5ad", 
-            "35days.h5ad", 
-            "diff_15days.h5ad",
-            "diff_35days.h5ad",
+            expand("figures/dotplot_{all}markerGenes.png", all= config['ALL']),
+            #expand("annotated_{all}.h5ad", all=config['ALL']),
+            #"15days.h5ad", 
+            #"35days.h5ad", 
+            #"diff_15days.h5ad",
+            #"diff_35days.h5ad",
             
 
              #expand("{subset}_{all}.h5ad", subset=config['SUBSET'], all=config['ALL'])
@@ -37,6 +38,15 @@ rule cluster:
           python cluster.py {input}
           """
 
+rule plotMarker:
+       input:
+          expand("clustered_{all}.h5ad", all=config['ALL'])
+       output: 
+          expand("figures/dotplot_{all}markerGenes.png", all= config['ALL']),
+       shell:
+          """
+          python  plot_markers.py  {input}
+          """ 
 rule annotate:
        input:
           expand("clustered_{all}.h5ad", all=config['ALL'])
